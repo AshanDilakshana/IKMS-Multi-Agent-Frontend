@@ -148,7 +148,7 @@ function App() {
                             fontSize: '1rem',
                             lineHeight: '1.6'
                         }}>
-                            Your intelligent knowledge management assistant. Ask me anything!
+                            Your intelligent knowledge management assistant.
                         </p>
                     </div>
                 </div>
