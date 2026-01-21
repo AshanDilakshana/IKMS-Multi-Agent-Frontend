@@ -10,6 +10,7 @@ function App() {
   const [sessionId, setSessionId] = useState(localStorage.getItem("session_id") || "");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef(null);
+  const abortControllerRef = useRef(null);
 
   useEffect(() => {
     if (sessionId) {
@@ -52,10 +53,11 @@ function App() {
     setMessages(prev => [...prev, userMsg]);
     setInput("");
     setIsLoading(true);
+    abortControllerRef.current = new AbortController();
 
     try {
       const currentSessionId = sessionId || undefined;
-      const res = await sendMessage(userMsg.content, currentSessionId);
+      const res = await sendMessage(userMsg.content, currentSessionId, abortControllerRef.current.signal);
       
       if (!sessionId && res.session_id) {
         setSessionId(res.session_id);
@@ -70,9 +72,16 @@ function App() {
       };
       setMessages(prev => [...prev, assistantMsg]);
     } catch (e) {
-      setMessages(prev => [...prev, { type: 'assistant', content: "Error: " + e.message }]);
+      if (e.name === 'AbortError') {
+          console.log('Request aborted');
+          // Optional: Add a message indicating cancellation
+          // setMessages(prev => [...prev, { type: 'assistant', content: "🛑 Generation stopped." }]);
+      } else {
+          setMessages(prev => [...prev, { type: 'assistant', content: "Error: " + e.message }]);
+      }
     } finally {
       setIsLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
@@ -85,6 +94,14 @@ function App() {
     localStorage.removeItem("session_id");
     setSessionId("");
     setMessages([]);
+  };
+
+  const handleStop = () => {
+      if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+          abortControllerRef.current = null;
+      }
+      setIsLoading(false);
   };
 
   useEffect(() => {
@@ -187,6 +204,20 @@ function App() {
                     {isLoading ? '⏳' : '✨'} Send
                 </span>
             </button>
+            {isLoading && (
+                <button 
+                  onClick={handleStop}
+                  style={{
+                      marginLeft: '10px', 
+                      background: 'rgba(255, 59, 48, 0.1)', 
+                      border: '1px solid rgba(255, 59, 48, 0.3)',
+                      color: '#ff3b30'
+                  }}
+                  title="Stop generation"
+                >
+                    ⏹ Stop
+                </button>
+            )}
             </div>
         </div>
       </div>

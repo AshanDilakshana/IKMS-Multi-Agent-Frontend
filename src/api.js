@@ -1,7 +1,7 @@
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8001";
 
-export const sendMessage = async (question, session_id) => {
+export const sendMessage = async (question, session_id, signal) => {
   try {
     const response = await fetch(`${API_BASE}/qa/conversation`, {
       method: "POST",
@@ -10,6 +10,7 @@ export const sendMessage = async (question, session_id) => {
         question, 
         session_id: session_id || null 
       }),
+      signal
     });
     
     if (!response.ok) {
