@@ -143,45 +143,15 @@ function App() {
         <div className="chat-container">
             <div className="message-list glass-panel" ref={scrollRef}>
             {messages.length === 0 && (
-                <div style={{
-                    textAlign: 'center', 
-                    padding: '60px 40px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '20px',
-                    justifyContent: 'center',
-                    flex: 1
-                }}>
-                    <div style={{
-                        fontSize: '4rem',
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        borderRadius: '50%',
-                        width: '120px',
-                        height: '120px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 0 40px rgba(102, 126, 234, 0.3)',
-                        animation: 'float 3s ease-in-out infinite'
-                    }}>
+                <div className="welcome-container">
+                    <div className="welcome-icon">
                         🤖
                     </div>
                     <div>
-                        <h2 style={{
-                            color: 'var(--text-primary)',
-                            fontSize: '1.5rem',
-                            fontWeight: '700',
-                            marginBottom: '12px',
-                            letterSpacing: '-0.02em'
-                        }}>
+                        <h2 className="welcome-title">
                             Welcome to IKMS Agent
                         </h2>
-                        <p style={{
-                            color: 'var(--text-muted)',
-                            fontSize: '1rem',
-                            lineHeight: '1.6'
-                        }}>
+                        <p className="welcome-text">
                             Your intelligent knowledge management assistant.
                         </p>
                     </div>
@@ -217,19 +187,14 @@ function App() {
                 disabled={isLoading}
             />
             <button onClick={handleSend} disabled={isLoading}>
-                <span style={{position: 'relative', zIndex: 1}}>
+                <span className="send-btn-content">
                     {isLoading ? '⏳' : '✨'} Send
                 </span>
             </button>
             {isLoading && (
                 <button 
                   onClick={handleStop}
-                  style={{
-                      marginLeft: '10px', 
-                      background: 'rgba(255, 59, 48, 0.1)', 
-                      border: '1px solid rgba(255, 59, 48, 0.3)',
-                      color: '#ff3b30'
-                  }}
+                  className="stop-btn"
                   title="Stop generation"
                 >
                     ⏹ Stop
