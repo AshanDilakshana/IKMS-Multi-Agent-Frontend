@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getSessions, deleteSession } from '../api';
 
-const Sidebar = ({ currentSessionId, onSelectSession, onNewChat }) => {
+const Sidebar = ({ currentSessionId, onSelectSession, onNewChat, isOpen, onClose }) => {
   const [sessions, setSessions] = useState([]);
 
   useEffect(() => {
@@ -34,7 +34,8 @@ const Sidebar = ({ currentSessionId, onSelectSession, onNewChat }) => {
   };
 
   return (
-    <div className="sidebar glass-panel">
+    <div className={`sidebar glass-panel ${isOpen ? 'open' : ''}`}>
+        <button className="mobile-close-btn" onClick={onClose}>✕</button>
         <button className="new-chat-btn" onClick={onNewChat}>
             <span style={{fontSize: '1.1rem', marginRight: '8px'}}>💬</span>
             New Chat

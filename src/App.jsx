@@ -9,6 +9,7 @@ function App() {
   const [input, setInput] = useState("");
   const [sessionId, setSessionId] = useState(localStorage.getItem("session_id") || "");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const scrollRef = useRef(null);
   const abortControllerRef = useRef(null);
 
@@ -88,12 +89,14 @@ function App() {
   const handleSelectSession = (id) => {
       setSessionId(id);
       localStorage.setItem("session_id", id);
+      setIsSidebarOpen(false);
   };
 
   const handleNewSession = () => {
     localStorage.removeItem("session_id");
     setSessionId("");
     setMessages([]);
+    setIsSidebarOpen(false);
   };
 
   const handleStop = () => {
@@ -113,14 +116,28 @@ function App() {
   return (
     <div className="app">
       <header>
+        <button 
+          className="mobile-menu-btn"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          aria-label="Toggle Menu"
+        >
+          ☰
+        </button>
         <h1>IKMS Agent</h1>
       </header>
       
       <div className="main-layout">
         <Sidebar 
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
             currentSessionId={sessionId} 
             onSelectSession={handleSelectSession} 
             onNewChat={handleNewSession} 
+        />
+        
+        <div 
+            className={`sidebar-overlay ${isSidebarOpen ? 'active' : ''}`}
+            onClick={() => setIsSidebarOpen(false)}
         />
 
         <div className="chat-container">
