@@ -1,5 +1,5 @@
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8001";
+const API_BASE = import.meta.env.VITE_API_BASE ;
 
 export const sendMessage = async (question, session_id, signal) => {
   try {
