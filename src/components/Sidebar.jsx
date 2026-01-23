@@ -37,20 +37,14 @@ const Sidebar = ({ currentSessionId, onSelectSession, onNewChat, isOpen, onClose
     <div className={`sidebar glass-panel ${isOpen ? 'open' : ''}`}>
         <button className="mobile-close-btn" onClick={onClose}>✕</button>
         <button className="new-chat-btn" onClick={onNewChat}>
-            <span style={{fontSize: '1.1rem', marginRight: '8px'}}>💬</span>
+            <span className="btn-icon">💬</span>
             New Chat
         </button>
         
         <div className="session-list">
             <h3>📚 Recent Chats</h3>
             {sessions.length === 0 && (
-                <p style={{
-                    opacity: 0.5, 
-                    padding: '20px 10px', 
-                    textAlign: 'center',
-                    fontSize: '0.85rem',
-                    color: 'var(--text-subtle)'
-                }}>
+                <p className="no-chats-msg">
                     No chats yet. Start a conversation!
                 </p>
             )}
@@ -60,9 +54,9 @@ const Sidebar = ({ currentSessionId, onSelectSession, onNewChat, isOpen, onClose
                     className={`session-item ${currentSessionId === session.id ? 'active' : ''}`}
                     onClick={() => onSelectSession(session.id)}
                 >
-                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <div className="session-item-content">
                         <div className="session-title">
-                            <span style={{opacity: 0.7, marginRight: '6px'}}>💭</span>
+                            <span className="session-icon">💭</span>
                             {session.title || "Untitled Chat"}
                         </div>
                         <button 
@@ -74,7 +68,7 @@ const Sidebar = ({ currentSessionId, onSelectSession, onNewChat, isOpen, onClose
                         </button>
                     </div>
                     <div className="session-date">
-                        <span style={{opacity: 0.6, marginRight: '4px'}}>📅</span>
+                        <span className="date-icon">📅</span>
                         {new Date(session.created_at).toLocaleDateString()}
                     </div>
                 </div>
